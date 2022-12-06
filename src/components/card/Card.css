@@ -8,7 +8,7 @@
     align-items: center;
     flex-direction: column;
   }
-  
+
   .card__question {
     font-family: "Abel", sans-serif;
     font-size: 18px;
@@ -16,7 +16,7 @@
     text-align: center;
     margin: 20px;
   }
-  
+
   .card__answer {
     font-family: "Abel", sans-serif;
     font-size: 18px;
@@ -27,11 +27,11 @@
     padding: 8px;
     display: inline-block;
   }
-  
+
   .hidden {
     display: none;
   }
-  
+
   .card__answerButton,
   .newButton {
     font-family: "Merienda One", sans-serif;
@@ -44,11 +44,11 @@
     background-color: aliceblue;
     cursor: pointer;
   }
-  
+
   .newButton {
     margin: 20px auto;
   }
-  
+
   .card__tagContainer {
     display: flex;
     flex-flow: row wrap;
@@ -57,7 +57,7 @@
     min-height: 30px;
     margin-bottom: 15px;
   }
-  
+
   .card__tagContainer__tag {
     font-family: "Merienda One", sans-serif;
     font-size: 14px;
@@ -69,14 +69,14 @@
     list-style-type: none;
     display: inline;
   }
-  
+
   .card__bookmark {
     position: absolute;
     cursor: pointer;
     top: -10px;
     right: 8px;
   }
-  
+
   .card__bookmark-svg {
     position: absolute;
     top: -300px;
@@ -84,7 +84,7 @@
     stroke: darkcyan;
     stroke-width: 4;
   }
-  
+
   .card__bookmark-svg-active {
     fill: darkcyan;
   }

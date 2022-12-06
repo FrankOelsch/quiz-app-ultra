@@ -13,21 +13,21 @@ const Questions = [
     id: nanoid(),
     question: "Das ist Frage Nr1",
     answer: "Und hier kommt Antwort Nr1",
-    tags: ["html", "css"],
+    tags: ["#html", "#css"],
     bookmarked: false,
   },
   {
     id: nanoid(),
     question: "Das ist Frage Nr2",
     answer: "Und hier kommt Antwort Nr2",
-    tags: ["css", "jsx", "mongoDB", "js"],
+    tags: ["#css", "#jsx", "#mongoDB", "#js"],
     bookmarked: true,
   },
   {
     id: nanoid(),
     question: "Das ist Frage Nr3",
     answer: "Und hier kommt Antwort Nr3",
-    tags: ["Javascript", "css"],
+    tags: ["#javascript", "#css"],
     bookmarked: false,
   },
 ];
@@ -47,6 +47,13 @@ function getFromLocalStorage(key) {
 function App() {
   const [cards, setCards] = useState(getFromLocalStorage("DB") ?? Questions);
   const navigate = useNavigate();
+  const [item, setItem] = useState({
+    id: 0,
+    question: "question",
+    answer: "answer",
+    tags: ["tag1", "tag2"],
+    bookmarked: false,
+  });
 
   useEffect(() => {
     setToLocalStorage("DB", cards);
@@ -80,11 +87,37 @@ function App() {
         id: nanoid(),
         question: values.question,
         answer: values.answer,
-        tags: tagArray,
+        tags: tagArray.map(tag => "#" + tag),
         isBookmarked: false,
       },
       ...cards,
     ]);
+
+    event.target.reset(); // reset form
+    navigate("/");
+  }
+
+  function editCard(event) {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data);
+    console.log(values);
+
+    const tagArray = values.tags.split(" ");
+
+    setCards(
+      cards.map((item) => {
+        if (item.id === values.id) {
+          return { ...item,
+            question: values.question,
+            answer: values.answer,
+            tags: tagArray.map(tag => "#" + tag) };
+        } else {
+          return item;
+        }
+      })
+    );
 
     event.target.reset(); // reset form
     navigate("/");
@@ -101,13 +134,14 @@ function App() {
                 questions={cards}
                 onDelete={deleteCard}
                 onBookmark={toggleBookmark}
+                setItem={setItem}
               /> }
             />
             <Route path="/:cardID" element={
               <Edit
-                questions={cards}
-                onDelete={deleteCard}
-                onBookmark={toggleBookmark}
+                item={item}
+                setItem={setItem}
+                onEdit={editCard}
               /> }
             />
           </Route>

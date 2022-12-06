@@ -1,7 +1,7 @@
 import Card from "../card/Card";
 import { useParams, Outlet } from "react-router-dom";
 
-export default function Cards({ questions, onDelete, onBookmark }) {
+export default function Cards({ questions, onDelete, onBookmark, setItem }) {
   const { cardID } = useParams();
 
   if (cardID) {
@@ -9,16 +9,13 @@ export default function Cards({ questions, onDelete, onBookmark }) {
   } else {
     return (
       <>
-        {questions.map((question) => (
+        {questions.map((card) => (
           <Card
-            key={question.id}
-            id={question.id}
-            question={question.question}
-            answer={question.answer}
-            tags={question.tags}
-            bookmarked={question.bookmarked}
+            key={card.id}
+            card={card}
             onDelete={onDelete}
             onBookmark={onBookmark}
+            setItem={setItem}
           />
         ))}
       </>
