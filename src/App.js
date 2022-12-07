@@ -1,5 +1,5 @@
 import "./App.css";
-import Header from "./components/header/Header";
+import Header from "./components/Header";
 import Nav from "./components/Navigation";
 import {useState, useEffect} from "react";
 import Cards from "./components/pages/Cards";
