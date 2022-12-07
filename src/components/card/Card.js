@@ -47,10 +47,10 @@ export default function Card({
 
       <ul className="card__tagContainer">
         {card.tags.length > 0
-          ? card.tags.map((e, index) => {
+          ? card.tags.split(",").map((tag, index) => {
             return (
               <li key={index} className="card__tagContainer__tag">
-                {e}
+                {`#${tag}`}
               </li>
             );
           })

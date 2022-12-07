@@ -7,6 +7,7 @@ export default function Nav() {
       <StyledNav>
         <StyledNavLink to="/" end>home</StyledNavLink>
         <StyledNavLink to="/bookmark">bookmark</StyledNavLink>
+        <StyledNavLink to="/:cardID" style={{pointerEvents: 'none'}}>edit</StyledNavLink>
         <StyledNavLink to="/new">add_box</StyledNavLink>
       </StyledNav>
     </Footer>

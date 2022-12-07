@@ -30,20 +30,42 @@ function handleProgressAn(event) {
   progressBarAnswer.style.width = (n / maxLettersA) * 100 + "%";
 }
 
-export default function Create({item, setItem, onEdit}) {
+export default function Create({item, setItem, onEdit, onNew, isNew}) {
+
+  function handleChange(e) {
+    console.log(e.target.name);
+    switch (e.target.name) {
+      case "question":
+        setItem({...item, question: e.target.value});
+        break;
+      case "answer":
+        setItem({...item, answer: e.target.value});
+        break;
+      case "tags":
+        setItem({...item, tags: e.target.value});
+        break;
+    }
+  }
+
   return (
-    <StyledForm onSubmit={(e) => onEdit(e)} >
+    <StyledForm onSubmit={(e) => {isNew ? onNew(e) : onEdit(e)}} >
+      <input
+        type="hidden"
+        value={item.id}
+        name="id"
+      />
+
       <label htmlFor="question">
         Frage
       </label>
       <textarea
         value={item.question}
+        onChange={handleChange}
         onInput={(e) => handleProgressQu(e)}
         maxLength={maxLettersQ}
-        data-js="question-input"
         name="question"
         id="question"
-        placeholder="Was bedeutet HTML?"
+        placeholder="Frage"
         required
       ></textarea>
       <ProgressDiv data-js="progress-bar-qu"></ProgressDiv>
@@ -54,12 +76,12 @@ export default function Create({item, setItem, onEdit}) {
       </label>
       <textarea
         value={item.answer}
+        onChange={handleChange}
         onInput={(e) => handleProgressAn(e)}
         maxLength={maxLettersA}
-        data-js="answer-input"
         name="answer"
         id="answer"
-        placeholder="Hypertext Markup Language."
+        placeholder="Antwort"
         required
       ></textarea>
       <ProgressDiv data-js="progress-bar-an"></ProgressDiv>
@@ -70,10 +92,11 @@ export default function Create({item, setItem, onEdit}) {
       </label>
       <input
         value={item.tags}
+        onChange={handleChange}
         type="text"
         name="tags"
         id="tags"
-        placeholder="html css javascript"
+        placeholder="Tags"
         required
       ></input>
 

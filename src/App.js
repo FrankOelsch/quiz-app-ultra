@@ -2,7 +2,6 @@ import "./App.css";
 import Header from "./components/header/Header";
 import Nav from "./components/navigation/Navigation";
 import {useState, useEffect} from "react";
-import Create from "./components/pages/Create";
 import Cards from "./components/pages/Cards";
 import Edit from "./components/pages/Edit";
 import {nanoid} from "nanoid";
@@ -13,21 +12,21 @@ const Questions = [
     id: nanoid(),
     question: "Das ist Frage Nr1",
     answer: "Und hier kommt Antwort Nr1",
-    tags: ["#html", "#css"],
+    tags: "html, css",
     bookmarked: false,
   },
   {
     id: nanoid(),
     question: "Das ist Frage Nr2",
     answer: "Und hier kommt Antwort Nr2",
-    tags: ["#css", "#jsx", "#mongoDB", "#js"],
+    tags: "css, jsx, mongoDB, js",
     bookmarked: true,
   },
   {
     id: nanoid(),
     question: "Das ist Frage Nr3",
     answer: "Und hier kommt Antwort Nr3",
-    tags: ["#javascript", "#css"],
+    tags: "javascript, css",
     bookmarked: false,
   },
 ];
@@ -51,7 +50,7 @@ function App() {
     id: 0,
     question: "question",
     answer: "answer",
-    tags: ["tag1", "tag2"],
+    tags: "tag1, tag2",
     bookmarked: false,
   });
 
@@ -73,21 +72,23 @@ function App() {
     );
   }
 
-  function appendCard(event) {
+  function newCard(event) {
     event.preventDefault();
 
     const data = new FormData(event.target);
     const values = Object.fromEntries(data);
     console.log(values);
 
-    const tagArray = values.tags.split(" ");
+    const array = values.tags.split(",");
+    const tagArray = array.map(tag => tag.trim());
+    let tagstring = tagArray.join(",");
 
     setCards([
       {
         id: nanoid(),
         question: values.question,
         answer: values.answer,
-        tags: tagArray.map(tag => "#" + tag),
+        tags: tagstring,
         isBookmarked: false,
       },
       ...cards,
@@ -104,15 +105,13 @@ function App() {
     const values = Object.fromEntries(data);
     console.log(values);
 
-    const tagArray = values.tags.split(" ");
-
     setCards(
       cards.map((item) => {
         if (item.id === values.id) {
           return { ...item,
             question: values.question,
             answer: values.answer,
-            tags: tagArray.map(tag => "#" + tag) };
+            tags: values.tags };
         } else {
           return item;
         }
@@ -142,20 +141,24 @@ function App() {
                 item={item}
                 setItem={setItem}
                 onEdit={editCard}
+                isNew={false}
               /> }
             />
           </Route>
 
           <Route path="/bookmark" element={
             <Cards
-              questions={cards.filter((e) => e.bookmarked === true)}
+              questions={cards.filter((card) => card.bookmarked === true)}
               onBookmark={toggleBookmark}
             /> }
           />
 
           <Route path="/new" element={
-            <Create
-              onNew={appendCard}
+            <Edit
+              item={item}
+              setItem={setItem}
+              onNew={newCard}
+              isNew={true}
             /> }
           />
 
