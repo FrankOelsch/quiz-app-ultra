@@ -1,6 +1,6 @@
-import Card from "../card/Card";
+import Card from "../components/Card";
 import { useParams, Outlet } from "react-router-dom";
-import Nav from "../Navigation";
+import Nav from "../components/Navigation";
 
 export default function Cards({ questions, onDelete, onBookmark, setItem }) {
   const { cardID } = useParams();

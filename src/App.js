@@ -2,8 +2,8 @@ import "./App.css";
 import Header from "./components/Header";
 import Nav from "./components/Navigation";
 import {useState, useEffect} from "react";
-import Cards from "./components/pages/Cards";
-import Edit from "./components/pages/Edit";
+import Cards from "./pages/Cards";
+import Edit from "./pages/Edit";
 import {nanoid} from "nanoid";
 import {Routes, Route, useNavigate} from "react-router-dom";
 
@@ -48,9 +48,9 @@ function App() {
   const navigate = useNavigate();
   const [item, setItem] = useState({
     id: 0,
-    question: "question",
-    answer: "answer",
-    tags: "tag1, tag2",
+    question: "",
+    answer: "",
+    tags: "",
     bookmarked: false,
   });
 
@@ -155,7 +155,13 @@ function App() {
 
           <Route path="/new" element={
             <Edit
-              item={item}
+              item={{
+                id: 0,
+                question: "",
+                answer: "",
+                tags: "",
+                bookmarked: false,
+              }}
               setItem={setItem}
               onNew={newCard}
               isNew={true}

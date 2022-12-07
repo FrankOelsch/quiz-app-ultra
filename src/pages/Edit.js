@@ -1,6 +1,6 @@
-import "../Navigation.js";
+import "../components/Navigation.js";
 import styled from "styled-components";
-import Nav from "../Navigation";
+import Nav from "../components/Navigation";
 
 const maxLettersQ = 200;
 const maxLettersA = 300;
