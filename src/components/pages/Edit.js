@@ -1,8 +1,9 @@
-import "../navigation/Navigation.js";
+import "../Navigation.js";
 import styled from "styled-components";
+import Nav from "../Navigation";
 
 const maxLettersQ = 200;
-const  maxLettersA = 300;
+const maxLettersA = 300;
 
 function handleProgressQu(event) {
   const questionMessage = document.querySelector(
@@ -48,62 +49,67 @@ export default function Create({item, setItem, onEdit, onNew, isNew}) {
   }
 
   return (
-    <StyledForm onSubmit={(e) => {isNew ? onNew(e) : onEdit(e)}} >
-      <input
-        type="hidden"
-        value={item.id}
-        name="id"
-      />
+    <>
+      <StyledForm onSubmit={(e) => {
+        isNew ? onNew(e) : onEdit(e)
+      }}>
+        <input
+          type="hidden"
+          value={item.id}
+          name="id"
+        />
 
-      <label htmlFor="question">
-        Frage
-      </label>
-      <textarea
-        value={item.question}
-        onChange={handleChange}
-        onInput={(e) => handleProgressQu(e)}
-        maxLength={maxLettersQ}
-        name="question"
-        id="question"
-        placeholder="Frage"
-        required
-      ></textarea>
-      <ProgressDiv data-js="progress-bar-qu"></ProgressDiv>
-      <Message data-js="question-message-qu"></Message>
+        <label htmlFor="question">
+          Frage
+        </label>
+        <textarea
+          value={item.question}
+          onChange={handleChange}
+          onInput={(e) => handleProgressQu(e)}
+          maxLength={maxLettersQ}
+          name="question"
+          id="question"
+          placeholder="Frage"
+          required
+        ></textarea>
+        <ProgressDiv data-js="progress-bar-qu"></ProgressDiv>
+        <Message data-js="question-message-qu"></Message>
 
-      <label htmlFor="answer">
-        Antwort
-      </label>
-      <textarea
-        value={item.answer}
-        onChange={handleChange}
-        onInput={(e) => handleProgressAn(e)}
-        maxLength={maxLettersA}
-        name="answer"
-        id="answer"
-        placeholder="Antwort"
-        required
-      ></textarea>
-      <ProgressDiv data-js="progress-bar-an"></ProgressDiv>
-      <Message data-js="question-message-an"></Message>
+        <label htmlFor="answer">
+          Antwort
+        </label>
+        <textarea
+          value={item.answer}
+          onChange={handleChange}
+          onInput={(e) => handleProgressAn(e)}
+          maxLength={maxLettersA}
+          name="answer"
+          id="answer"
+          placeholder="Antwort"
+          required
+        ></textarea>
+        <ProgressDiv data-js="progress-bar-an"></ProgressDiv>
+        <Message data-js="question-message-an"></Message>
 
-      <label htmlFor="tags">
-        Tags
-      </label>
-      <input
-        value={item.tags}
-        onChange={handleChange}
-        type="text"
-        name="tags"
-        id="tags"
-        placeholder="Tags"
-        required
-      ></input>
+        <label htmlFor="tags">
+          Tags
+        </label>
+        <input
+          value={item.tags}
+          onChange={handleChange}
+          type="text"
+          name="tags"
+          id="tags"
+          placeholder="Tags"
+          required
+        ></input>
 
-      <button data-js="new-button">
-        Speichern
-      </button>
-    </StyledForm>
+        <button data-js="new-button">
+          Speichern
+        </button>
+      </StyledForm>
+      <Nav isEdit={!isNew}/>
+    </>
   );
 }
 
@@ -118,7 +124,7 @@ const StyledForm = styled.form`
     font-size: 20px;
     margin-top: 20px;
   }
-  
+
   textarea,
   input {
     font-family: "Abel", sans-serif;
@@ -129,7 +135,7 @@ const StyledForm = styled.form`
     width: 300px;
     padding: 0 3px;
   }
-  
+
   textarea {
     height: 100px;
   }
@@ -150,8 +156,9 @@ const StyledForm = styled.form`
     background-color: aliceblue;
     cursor: pointer;
   }
+
   button:hover {
-     border: 2px solid blue;
+    border: 2px solid blue;
   }
 `
 const ProgressDiv = styled.div`

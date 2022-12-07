@@ -1,5 +1,6 @@
 import Card from "../card/Card";
 import { useParams, Outlet } from "react-router-dom";
+import Nav from "../Navigation";
 
 export default function Cards({ questions, onDelete, onBookmark, setItem }) {
   const { cardID } = useParams();
@@ -18,6 +19,7 @@ export default function Cards({ questions, onDelete, onBookmark, setItem }) {
             setItem={setItem}
           />
         ))}
+        <Nav isEdit={false}/>
       </>
     );
   }

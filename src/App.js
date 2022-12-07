@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./components/header/Header";
-import Nav from "./components/navigation/Navigation";
+import Nav from "./components/Navigation";
 import {useState, useEffect} from "react";
 import Cards from "./components/pages/Cards";
 import Edit from "./components/pages/Edit";
@@ -165,8 +165,6 @@ function App() {
           <Route path="*" element={<h1>Diese Seite existiert nicht</h1>}/>
         </Routes>
       </main>
-
-      <Nav/>
     </div>
   );
 }
