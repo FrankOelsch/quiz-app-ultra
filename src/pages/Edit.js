@@ -31,7 +31,7 @@ function handleProgressAn(event) {
   progressBarAnswer.style.width = (n / maxLettersA) * 100 + "%";
 }
 
-export default function Create({item, setItem, onEdit, onNew, isNew}) {
+export default function Edit({item, setItem, onEdit, onNew, isNew}) {
 
   function handleChange(e) {
     console.log(e.target.name);
@@ -44,6 +44,8 @@ export default function Create({item, setItem, onEdit, onNew, isNew}) {
         break;
       case "tags":
         setItem({...item, tags: e.target.value});
+        break;
+      default:
         break;
     }
   }

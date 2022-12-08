@@ -32,17 +32,18 @@ const Footer = styled.footer`
   .navlink,
   .navlinkEdit
   {
-    height: 60px;
+    height: 50px;
     width: 33.3333%;
+    padding: 3px;
     text-align: center;
     background-color: azure;
     text-decoration: none;
     border: black solid 1px;
     transition: 0.5s;
     font-family: "Material Symbols Outlined", sans-serif;
-    font-size: 48px;
+    font-size: 36px;
     font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
-    color: darkolivegreen;
+    color: steelblue;
   }
   .navlinkEdit {
     pointer-events: none;
@@ -51,11 +52,11 @@ const Footer = styled.footer`
   .navlinkEdit.active
   {
     font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
-    background-color: cadetblue;
+    background-color: steelblue;
     color: white;
   }
   .navlink:hover {
-    background-color: cadetblue;
+    background-color: steelblue;
     color: white;
   }
 

@@ -71,7 +71,7 @@ export default function Card({
 
 const StyledArticle = styled.article`
   position: relative;
-  background-color: gainsboro;
+  background-color: rgba(100, 148, 237, 0.3);
   border: gray solid 1px;
   border-radius: 8px;
   box-shadow: black 1px 2px 5px;
@@ -163,14 +163,14 @@ const StyledArticle = styled.article`
   .card__bookmark {
     position: absolute;
     cursor: pointer;
-    top: -8px;
+    top: -6px;
     right: 8px;
   }
 
   .card__bookmark-svg {
     position: absolute;
     top: -300px;
-    fill: whitesmoke;
+    fill: transparent;
     stroke: darkcyan;
     stroke-width: 3;
   }
