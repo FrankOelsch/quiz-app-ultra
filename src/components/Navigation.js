@@ -34,7 +34,6 @@ const Footer = styled.footer`
   {
     height: 50px;
     width: 33.3333%;
-    padding: 3px;
     text-align: center;
     background-color: azure;
     text-decoration: none;

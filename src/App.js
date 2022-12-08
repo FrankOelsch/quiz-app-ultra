@@ -11,21 +11,21 @@ const Questions = [
     id: nanoid(),
     question: "Das ist Frage Nr1",
     answer: "Und hier kommt Antwort Nr1",
-    tags: "html, css",
+    tags: "html,css",
     bookmarked: false,
   },
   {
     id: nanoid(),
     question: "Das ist Frage Nr2",
     answer: "Und hier kommt Antwort Nr2",
-    tags: "css, jsx, mongoDB, js",
+    tags: "css,jsx,mongoDB,js",
     bookmarked: true,
   },
   {
     id: nanoid(),
     question: "Das ist Frage Nr3",
     answer: "Und hier kommt Antwort Nr3",
-    tags: "javascript, css",
+    tags: "javascript,css",
     bookmarked: false,
   },
 ];
@@ -43,7 +43,7 @@ function getFromLocalStorage(key) {
 }
 
 function App() {
-  const [cards, setCards] = useState(getFromLocalStorage("DB") ?? Questions);
+  const [cards, setCards] = useState(getFromLocalStorage("Questions") ?? Questions);
   const navigate = useNavigate();
   const [item, setItem] = useState({
     id: 0,
@@ -54,7 +54,7 @@ function App() {
   });
 
   useEffect(() => {
-    setToLocalStorage("DB", cards);
+    setToLocalStorage("Questions", cards);
   }, [cards]);
 
   function deleteCard(id) {

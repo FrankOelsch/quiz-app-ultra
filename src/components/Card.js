@@ -1,6 +1,8 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
+import {Button, Modal} from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Card({
                                card,
@@ -9,63 +11,103 @@ export default function Card({
                                setItem,
                              }) {
 
-  const [show, setShow] = useState(false);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+
+  function handleShowModal() {
+    setShowModal(true);
+  }
+
+  function handleCloseModal() {
+    setShowModal(false);
+  }
 
   function handleOnEdit(id) {
     setItem(card);
     navigate(id);
   }
 
+  function handleOnDelete() {
+    handleShowModal();
+  }
+
+  function handleDelete() {
+    onDelete(card.id);
+    setShowModal(false);
+  }
+
   return (
-    <StyledArticle>
+    <>
+      <Modal
+        show={showModal}
+        onHide={handleCloseModal}
+        backdrop="static"
+        keyboard={true}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Diese Frage/Antwort löschen?</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Wenn du auf 'Frage/Antwort Löschen' klickst, wird diese gelöscht. Dies kann nicht rückgängig gemacht werden.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button size="sm" variant="secondary" onClick={handleCloseModal}>
+            Abbrechen
+          </Button>
+          <Button size="sm" variant="danger" onClick={handleDelete}>Frage/Antwort Löschen</Button>
+        </Modal.Footer>
+      </Modal>
 
-      <button
-        onClick={() => setShow(!show)}
-        className="card__answerButton">
-        {show ? "Hide Answer" : "Show Answer"}
-      </button>
-      <h2 className="card__question">{card.question}</h2>
-
-      <p className={`card__answer ${show ? "" : "hidden"}`} data-js="answer">
-        {card.answer}
-      </p>
-
-      <ul className="card__tagContainer">
-        {card.tags.length > 0
-          ? card.tags.split(",").map((tag, index) => {
-            return (
-              <li key={index} className="card__tagContainer__tag">
-                {`#${tag}`}
-              </li>
-            );
-          })
-          : ""}
-      </ul>
-      <div className="card__bookmark">
-        <svg height="40" width="40">
-          <polygon
-            onClick={() => onBookmark(card.id)}
-            points="2,2 30,2 30,38 16,24 2,38"
-            className={`card__bookmark-svg${card.bookmarked ? "-active" : ""}`}
-          />
-        </svg>
-      </div>
-
-      <div>
+      <StyledArticle>
         <button
-          onClick={() => handleOnEdit(card.id)}
-          className="card__editButton">
-          Edit
+          onClick={() => setShowAnswer(!showAnswer)}
+          className="card__answerButton">
+          {showAnswer ? "Verstecke Antwort" : "Zeige Antwort"}
         </button>
+        <h2 className="card__question">{card.question}</h2>
 
-        <button
-          onClick={() => onDelete(card.id)}
-          className="card__deleteButton">
-          Delete
-        </button>
-      </div>
-    </StyledArticle>
+        <p className={`card__answer ${showAnswer ? "" : "hidden"}`} data-js="answer">
+          {card.answer}
+        </p>
+
+        <ul className="card__tagContainer">
+          {card.tags.length > 0
+            ? card.tags.split(",").map((tag, index) => {
+              return (
+                <li key={index} className="card__tagContainer__tag">
+                  {`#${tag}`}
+                </li>
+              );
+            })
+            : ""}
+        </ul>
+        <div className="card__bookmark">
+          <svg height="40" width="40">
+            <polygon
+              onClick={() => onBookmark(card.id)}
+              points="2,2 30,2 30,38 16,24 2,38"
+              className={`card__bookmark-svg${card.bookmarked ? "-active" : ""}`}
+            />
+          </svg>
+        </div>
+
+        <div>
+          <button
+            onClick={() => handleOnEdit(card.id)}
+            className="card__editButton">
+            Ändern
+          </button>
+
+          <button
+            onClick={() => handleOnDelete(card.id)}
+            className="card__deleteButton">
+            Löschen
+          </button>
+        </div>
+      </StyledArticle>
+    </>
   );
 }
 
@@ -86,18 +128,20 @@ const StyledArticle = styled.article`
   .card__question {
     font-family: "Arial", sans-serif;
     font-size: 18px;
-    width: 80%;
+    width: 90%;
     text-align: center;
+    margin: 0;
   }
 
   .card__answer {
     font-family: "Arial", sans-serif;
-    font-size: 18px;
-    width: 80%;
+    font-size: 16px;
+    width: 90%;
     text-align: center;
     border: solid 1px gray;
-    padding: 8px;
+    padding: 4px;
     display: inline-block;
+    margin: 0;
   }
 
   .hidden {
@@ -120,7 +164,7 @@ const StyledArticle = styled.article`
 
   .card__answerButton {
     background-color: steelblue;
-    min-width: 120px;
+    min-width: 150px;
   }
 
   .card__editButton {
@@ -143,8 +187,10 @@ const StyledArticle = styled.article`
     display: flex;
     flex-flow: row wrap;
     gap: 10px;
-    width: 80%;
+    width: 90%;
     min-height: 26px;
+    padding: 0;
+    margin 0;
   }
 
   .card__tagContainer__tag {
