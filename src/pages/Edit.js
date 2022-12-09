@@ -1,179 +1,138 @@
 import "../components/Navigation.js";
 import styled from "styled-components";
 import Nav from "../components/Navigation";
+import {useForm} from "react-hook-form";
+import {Button, Form} from "react-bootstrap";
 
-const maxLettersQ = 200;
-const maxLettersA = 300;
-
-function handleProgressQu(event) {
-  const questionMessage = document.querySelector(
-    '[data-js="question-message-qu"]'
-  );
-  const progressBarQuest = document.querySelector(
-    '[data-js="progress-bar-qu"]'
-  );
-
-  const n = maxLettersQ - +event.target.value.length;
-  questionMessage.textContent = `Noch ${n} von ${maxLettersQ} Zeichen möglich.`;
-  progressBarQuest.style.width = (n / maxLettersQ) * 100 + "%";
-}
-
-function handleProgressAn(event) {
-  const answerMessage = document.querySelector(
-    '[data-js="question-message-an"]'
-  );
-  const progressBarAnswer = document.querySelector(
-    '[data-js="progress-bar-an"]'
-  );
-
-  const n = maxLettersA - +event.target.value.length;
-  answerMessage.textContent = `Noch ${n} von ${maxLettersA} Zeichen möglich.`;
-  progressBarAnswer.style.width = (n / maxLettersA) * 100 + "%";
-}
 
 export default function Edit({item, setItem, onEdit, onNew, isNew}) {
 
-  function handleChange(e) {
-    console.log(e.target.name);
-    switch (e.target.name) {
-      case "question":
-        setItem({...item, question: e.target.value});
-        break;
-      case "answer":
-        setItem({...item, answer: e.target.value});
-        break;
-      case "tags":
-        setItem({...item, tags: e.target.value});
-        break;
-      default:
-        break;
+  const {register, handleSubmit, formState: {errors}} = useForm({
+    defaultValues: {
+      question: item.question,
+      answer: item.answer,
+      tags: item.tags,
+      id: item.id,
     }
+  });
+
+  const registerOptions = {
+    id: {
+      required: "id is required"
+    },
+    question: {
+      required: "Bitte eine Frage eingeben",
+      minLength: {
+        value: 10,
+        message: "Die Frage muss min 10 Text-Zeichen haben"
+      },
+      maxLength: {
+        value: 200,
+        message: "Bitte max 200 Text-Zeichen eingeben"
+      }
+    },
+    answer: {
+      required: "Bitte eine Antwort eingeben",
+      minLength: {
+        value: 10,
+        message: "Die Antwort muss min 10 Text-Zeichen haben"
+      },
+      maxLength: {
+        value: 200,
+        message: "Bitte max 200 Text-Zeichen eingeben"
+      }
+    },
+    tags: {
+      required: "Bitte ein Tag eingeben",
+      minLength: {
+        value: 2,
+        message: "Bitte min 1 Tag mit 2 Text-Zeichen eingeben"
+      },
+      maxLength: {
+        value: 20,
+        message: "Bitte max 20 Text-Zeichen eingeben"
+      }
+    },
+  };
+
+  function onSubmit(data) {
+    isNew ? onNew(data) : onEdit(data);
   }
 
   return (
     <>
-      <StyledForm onSubmit={(e) => {
-        isNew ? onNew(e) : onEdit(e)
-      }}>
+      <StyledFormHook onSubmit={handleSubmit(onSubmit)}>
         <input
+          {...register('id', registerOptions.id)}
           type="hidden"
-          value={item.id}
           name="id"
         />
 
-        <label htmlFor="question">
-          Frage
-        </label>
-        <textarea
-          value={item.question}
-          onChange={handleChange}
-          onInput={(e) => handleProgressQu(e)}
-          maxLength={maxLettersQ}
-          name="question"
-          id="question"
-          placeholder="Frage"
-          required
-        ></textarea>
-        <ProgressDiv data-js="progress-bar-qu"></ProgressDiv>
-        <Message data-js="question-message-qu"></Message>
+        <label>Frage</label>
+        <Form.Group md="4" controlId="question">
+          <Form.Control
+            {...register('question', registerOptions.question)}
+            as="textarea"
+            rows={3}
+            isInvalid={!(!errors?.question)}
+            isValid={(!errors?.question)}
+            name="question"
+            maxLength={300}
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors?.question && errors.question.message}
+          </Form.Control.Feedback>
+        </Form.Group>
 
-        <label htmlFor="answer">
-          Antwort
-        </label>
-        <textarea
-          value={item.answer}
-          onChange={handleChange}
-          onInput={(e) => handleProgressAn(e)}
-          maxLength={maxLettersA}
-          name="answer"
-          id="answer"
-          placeholder="Antwort"
-          required
-        ></textarea>
-        <ProgressDiv data-js="progress-bar-an"></ProgressDiv>
-        <Message data-js="question-message-an"></Message>
+        <label>Antwort</label>
+        <Form.Group md="4" controlId="answer">
+          <Form.Control
+            {...register('answer', registerOptions.answer)}
+            as="textarea"
+            rows={3}
+            isInvalid={!(!errors?.answer)}
+            isValid={(!errors?.answer)}
+            name="answer"
+            maxLength={300}
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors?.answer && errors.answer.message}
+          </Form.Control.Feedback>
+        </Form.Group>
 
-        <label htmlFor="tags">
-          Tags
-        </label>
-        <input
-          value={item.tags}
-          onChange={handleChange}
-          type="text"
-          name="tags"
-          id="tags"
-          placeholder="Tags"
-          required
-        ></input>
+        <label>Tags</label>
+        <Form.Group md="4" controlId="tags">
+          <Form.Control
+            {...register('tags', registerOptions.tags)}
+            type="text"
+            isInvalid={!(!errors?.tags)}
+            isValid={(!errors?.tags)}
+            name="tags"
+            maxLength={30}
+            placeholder="tag1,tag2..."
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors?.tags && errors.tags.message}
+          </Form.Control.Feedback>
+        </Form.Group>
 
-        <button data-js="new-button">
-          Speichern
-        </button>
-      </StyledForm>
+        <Button type="submit">Submit</Button>
+      </StyledFormHook>
+
       <Nav isEdit={!isNew}/>
     </>
   );
 }
 
-const StyledForm = styled.form`
+const StyledFormHook = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
+  gap: 10px;
 
-  label {
-    font-family: "Abel", sans-serif;
-    font-size: 20px;
-    margin-top: 20px;
-  }
-
-  textarea,
-  input {
-    font-family: "Abel", sans-serif;
-    font-size: 18px;
-    outline: none;
-    border: 2px solid gray;
-    resize: none;
-    width: 300px;
-    padding: 0 3px;
-  }
-
+  input[type=text],
   textarea {
-    height: 100px;
+    width: 300px;
   }
-
-  textarea:hover,
-  input:hover {
-    border: 2px solid blue;
-  }
-
-  button {
-    font-family: "Merienda One", sans-serif;
-    font-size: 16px;
-    width: 140px;
-    padding: 2px;
-    margin: 20px;
-    border: gray solid 2px;
-    border-radius: 8px;
-    background-color: aliceblue;
-    cursor: pointer;
-  }
-
-  button:hover {
-    border: 2px solid blue;
-  }
-`
-const ProgressDiv = styled.div`
-  bottom: 0;
-  left: 0;
-  height: 4px;
-  width: 0;
-  background-color: green;
-  transition: width 0.05s ease;
-`
-
-const Message = styled.p`
-  font-family: "Abel", sans-serif;
-  font-size: 14px;
-  text-align: right;
 `

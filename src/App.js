@@ -9,26 +9,34 @@ import {Routes, Route, useNavigate} from "react-router-dom";
 const Questions = [
   {
     id: nanoid(),
-    question: "Das ist Frage Nr1",
-    answer: "Und hier kommt Antwort Nr1",
-    tags: "html,css",
+    question: "Welche der 3 Nährstoffe - Kohlenhydrate, Eiweisse, Fette - ist nicht essentiell?",
+    answer: "Kohlenhydrate. Es gibt essentielle Fettsäuren, essentielle Aminosäuren, aber keine essentiellen Kohlenhydrate.",
+    tags: "KH,Fette,Eiweiss",
     bookmarked: false,
   },
   {
     id: nanoid(),
-    question: "Das ist Frage Nr2",
-    answer: "Und hier kommt Antwort Nr2",
-    tags: "css,jsx,mongoDB,js",
+    question: "Was bedeutet HTML?",
+    answer: "Hypertext Markup Language.",
+    tags: "html",
     bookmarked: true,
   },
   {
     id: nanoid(),
-    question: "Das ist Frage Nr3",
-    answer: "Und hier kommt Antwort Nr3",
-    tags: "javascript,css",
+    question: "Was bedeutet CSS?",
+    answer: "Cascading Style Sheets",
+    tags: "css",
     bookmarked: false,
   },
 ];
+
+const defaultQuestion = {
+  id: 0,
+  question: "",
+  answer: "",
+  tags: "",
+  bookmarked: false,
+}
 
 function setToLocalStorage(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
@@ -45,13 +53,7 @@ function getFromLocalStorage(key) {
 function App() {
   const [cards, setCards] = useState(getFromLocalStorage("Questions") ?? Questions);
   const navigate = useNavigate();
-  const [item, setItem] = useState({
-    id: 0,
-    question: "",
-    answer: "",
-    tags: "",
-    bookmarked: false,
-  });
+  const [item, setItem] = useState(defaultQuestion);
 
   useEffect(() => {
     setToLocalStorage("Questions", cards);
@@ -71,11 +73,8 @@ function App() {
     );
   }
 
-  function newCard(event) {
-    event.preventDefault();
-
-    const data = new FormData(event.target);
-    const values = Object.fromEntries(data);
+  function newCard(data) {
+    const values = data;
     console.log(values);
 
     const array = values.tags.split(",");
@@ -93,16 +92,12 @@ function App() {
       ...cards,
     ]);
 
-    event.target.reset(); // reset form
+    setItem(defaultQuestion)
     navigate("/");
   }
 
-  function editCard(event) {
-    event.preventDefault();
-
-    const data = new FormData(event.target);
-    const values = Object.fromEntries(data);
-    console.log(values);
+  function editCard(data) {
+    const values = data;
 
     setCards(
       cards.map((item) => {
@@ -117,7 +112,7 @@ function App() {
       })
     );
 
-    event.target.reset(); // reset form
+    setItem(defaultQuestion)
     navigate("/");
   }
 
@@ -154,13 +149,7 @@ function App() {
 
           <Route path="/new" element={
             <Edit
-              item={{
-                id: 0,
-                question: "",
-                answer: "",
-                tags: "",
-                bookmarked: false,
-              }}
+              item={item}
               setItem={setItem}
               onNew={newCard}
               isNew={true}
