@@ -3,11 +3,20 @@ import styled from "styled-components";
 import Nav from "../components/Navigation";
 import {useForm} from "react-hook-form";
 import {Button, Form} from "react-bootstrap";
+import {useState} from "react";
 
+export default function Edit({item, onEdit, onNew, isNew}) {
 
-export default function Edit({item, setItem, onEdit, onNew, isNew}) {
-
-  const {register, handleSubmit, formState: {errors}} = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: {errors}
+  } = useForm({
+    mode: 'onSubmit', //default
+    reValidateMode: 'onChange', //default
+    criteriaMode: "firstError", //default
+    shouldFocusError: true, //default
+    shouldUseNativeValidation: false, //default
     defaultValues: {
       question: item.question,
       answer: item.answer,
@@ -55,8 +64,15 @@ export default function Edit({item, setItem, onEdit, onNew, isNew}) {
     },
   };
 
+  const [firstSubmit, setFirstSubmit] = useState(false);
+
   function onSubmit(data) {
     isNew ? onNew(data) : onEdit(data);
+  }
+
+  function onClick() {
+    console.log("onClick");
+    setFirstSubmit(true);
   }
 
   return (
@@ -68,55 +84,55 @@ export default function Edit({item, setItem, onEdit, onNew, isNew}) {
           name="id"
         />
 
-        <label>Frage</label>
         <Form.Group md="4" controlId="question">
+          <Form.Label>Frage</Form.Label>
           <Form.Control
             {...register('question', registerOptions.question)}
             as="textarea"
             rows={3}
-            isInvalid={!(!errors?.question)}
-            isValid={(!errors?.question)}
+            isInvalid={firstSubmit && !(!errors?.question)}
+            isValid={firstSubmit && (!errors?.question)}
             name="question"
             maxLength={300}
           />
           <Form.Control.Feedback type="invalid">
-            {errors?.question && errors.question.message}
+            {firstSubmit && errors?.question && errors.question.message}
           </Form.Control.Feedback>
         </Form.Group>
 
-        <label>Antwort</label>
         <Form.Group md="4" controlId="answer">
+          <Form.Label>Antwort</Form.Label>
           <Form.Control
             {...register('answer', registerOptions.answer)}
             as="textarea"
             rows={3}
-            isInvalid={!(!errors?.answer)}
-            isValid={(!errors?.answer)}
+            isInvalid={firstSubmit && !(!errors?.answer)}
+            isValid={firstSubmit && (!errors?.answer)}
             name="answer"
             maxLength={300}
           />
           <Form.Control.Feedback type="invalid">
-            {errors?.answer && errors.answer.message}
+            {firstSubmit && errors?.answer && errors.answer.message}
           </Form.Control.Feedback>
         </Form.Group>
 
-        <label>Tags</label>
         <Form.Group md="4" controlId="tags">
+          <Form.Label>Tags</Form.Label>
           <Form.Control
             {...register('tags', registerOptions.tags)}
             type="text"
-            isInvalid={!(!errors?.tags)}
-            isValid={(!errors?.tags)}
+            isInvalid={firstSubmit && !(!errors?.tags)}
+            isValid={firstSubmit && (!errors?.tags)}
             name="tags"
             maxLength={30}
             placeholder="tag1,tag2..."
           />
           <Form.Control.Feedback type="invalid">
-            {errors?.tags && errors.tags.message}
+            {firstSubmit && errors?.tags && errors.tags.message}
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Button type="submit">Submit</Button>
+        <Button onClick={onClick} type="submit">Speichern</Button>
       </StyledFormHook>
 
       <Nav isEdit={!isNew}/>
@@ -130,9 +146,17 @@ const StyledFormHook = styled.form`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  
+  label {
+    margin: 0;
+  }
 
   input[type=text],
   textarea {
     width: 300px;
+  }
+  
+  button {
+    margin-top: 20px;
   }
 `
