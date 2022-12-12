@@ -18,49 +18,46 @@ export default function Edit({item, onEdit, onNew, isNew}) {
     shouldFocusError: true, //default
     shouldUseNativeValidation: false, //default
     defaultValues: {
+      id: item.id,
       question: item.question,
       answer: item.answer,
       tags: item.tags,
-      id: item.id,
     }
   });
 
   const registerOptions = {
-    id: {
-      required: "id is required"
-    },
     question: {
       required: "Bitte eine Frage eingeben",
       minLength: {
         value: 10,
-        message: "Die Frage muss min 10 Text-Zeichen haben"
+        message: "Die Frage muss min 10 Text-Zeichen haben",
       },
       maxLength: {
         value: 200,
-        message: "Bitte max 200 Text-Zeichen eingeben"
-      }
+        message: "Bitte max 200 Text-Zeichen eingeben",
+      },
     },
     answer: {
       required: "Bitte eine Antwort eingeben",
       minLength: {
         value: 10,
-        message: "Die Antwort muss min 10 Text-Zeichen haben"
+        message: "Die Antwort muss min 10 Text-Zeichen haben",
       },
       maxLength: {
         value: 200,
-        message: "Bitte max 200 Text-Zeichen eingeben"
-      }
+        message: "Bitte max 200 Text-Zeichen eingeben",
+      },
     },
     tags: {
       required: "Bitte ein Tag eingeben",
       minLength: {
         value: 2,
-        message: "Bitte min 1 Tag mit 2 Text-Zeichen eingeben"
+        message: "Bitte min 1 Tag mit 2 Text-Zeichen eingeben",
       },
       maxLength: {
         value: 20,
-        message: "Bitte max 20 Text-Zeichen eingeben"
-      }
+        message: "Bitte max 20 Text-Zeichen eingeben",
+      },
     },
   };
 
@@ -71,7 +68,6 @@ export default function Edit({item, onEdit, onNew, isNew}) {
   }
 
   function onClick() {
-    console.log("onClick");
     setFirstSubmit(true);
   }
 

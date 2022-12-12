@@ -190,7 +190,7 @@ const StyledArticle = styled.article`
     width: 90%;
     min-height: 26px;
     padding: 0;
-    margin 0;
+    margin: 0;
   }
 
   .card__tagContainer__tag {

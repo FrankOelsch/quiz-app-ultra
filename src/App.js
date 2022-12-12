@@ -5,6 +5,8 @@ import Cards from "./pages/Cards";
 import Edit from "./pages/Edit";
 import {nanoid} from "nanoid";
 import {Routes, Route, useNavigate} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Toast, ToastContainer} from "react-bootstrap";
 
 const Questions = [
   {
@@ -54,6 +56,7 @@ function App() {
   const [cards, setCards] = useState(getFromLocalStorage("Questions") ?? Questions);
   const navigate = useNavigate();
   const [item, setItem] = useState(defaultQuestion);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     setToLocalStorage("Questions", cards);
@@ -61,6 +64,7 @@ function App() {
 
   function deleteCard(id) {
     setCards(cards.filter((card) => card.id !== id));
+    setShowToast(true);
   }
 
   function toggleBookmark(id) {
@@ -158,6 +162,33 @@ function App() {
 
           <Route path="*" element={<h1>Diese Seite existiert nicht</h1>}/>
         </Routes>
+
+        <div style={{position: "fixed",
+          top: 10,
+          width: "80%",
+          height: "60px",
+          zIndex: 30,
+        }}>
+        <ToastContainer position="middle-start">
+          <Toast onClose={() => setShowToast(false)}
+                 show={showToast}
+                 delay={5000}
+                 autohide
+                 animation
+                 bg="success">
+            <Toast.Header>
+              <img
+                src=""
+                className="rounded me-2"
+                alt=""
+              />
+              <strong className="me-auto">Gelöscht</strong>
+              <small>soeben</small>
+            </Toast.Header>
+            <Toast.Body>Datensatz wurde erfolgreich gelöscht.</Toast.Body>
+          </Toast>
+        </ToastContainer>
+        </div>
       </main>
     </div>
   );
