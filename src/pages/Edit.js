@@ -149,7 +149,7 @@ const StyledFormHook = styled.form`
 
   input[type=text],
   textarea {
-    width: 300px;
+    min-width: 320px;
   }
   
   button {

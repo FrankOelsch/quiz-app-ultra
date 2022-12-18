@@ -153,7 +153,7 @@ function App() {
 
           <Route path="/new" element={
             <Edit
-              item={item}
+              item={defaultQuestion}
               setItem={setItem}
               onNew={newCard}
               isNew={true}
