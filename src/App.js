@@ -147,7 +147,18 @@ function App() {
           <Route path="/bookmark" element={
             <Cards
               questions={cards.filter((card) => card.bookmarked === true)}
+              onDelete={deleteCard}
               onBookmark={toggleBookmark}
+              setItem={setItem}
+            /> }
+          />
+
+          <Route path="/bookmark/:cardID" element={
+            <Edit
+              item={item}
+              setItem={setItem}
+              onEdit={editCard}
+              isNew={false}
             /> }
           />
 
