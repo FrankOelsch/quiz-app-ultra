@@ -42,8 +42,8 @@ export default function Edit({item, onEdit, onNew, isNew}) {
     answerA: {
       required: "Bitte eine Antwort eingeben",
       minLength: {
-        value: 10,
-        message: "Die Antwort muss min 10 Text-Zeichen haben",
+        value: 4,
+        message: "Die Antwort muss min 4 Text-Zeichen haben",
       },
       maxLength: {
         value: 200,
@@ -53,8 +53,8 @@ export default function Edit({item, onEdit, onNew, isNew}) {
     answerB: {
       required: "Bitte eine Antwort eingeben",
       minLength: {
-        value: 10,
-        message: "Die Antwort muss min 10 Text-Zeichen haben",
+        value: 4,
+        message: "Die Antwort muss min 4 Text-Zeichen haben",
       },
       maxLength: {
         value: 200,
@@ -64,8 +64,8 @@ export default function Edit({item, onEdit, onNew, isNew}) {
     answerC: {
       required: "Bitte eine Antwort eingeben",
       minLength: {
-        value: 10,
-        message: "Die Antwort muss min 10 Text-Zeichen haben",
+        value: 4,
+        message: "Die Antwort muss min 4 Text-Zeichen haben",
       },
       maxLength: {
         value: 200,
@@ -123,7 +123,7 @@ export default function Edit({item, onEdit, onNew, isNew}) {
         <Form.Group md="4" controlId="answerA">
           <Form.Label>Antwort A</Form.Label>
           <Form.Control
-            {...register('answerA', registerOptions.answer)}
+            {...register('answerA', registerOptions.answerA)}
             as="textarea"
             rows={2}
             isInvalid={firstSubmit && !(!errors?.answerA)}
@@ -139,7 +139,7 @@ export default function Edit({item, onEdit, onNew, isNew}) {
         <Form.Group md="4" controlId="answerB">
           <Form.Label>Antwort B</Form.Label>
           <Form.Control
-            {...register('answerB', registerOptions.answer)}
+            {...register('answerB', registerOptions.answerB)}
             as="textarea"
             rows={2}
             isInvalid={firstSubmit && !(!errors?.answerB)}
@@ -155,7 +155,7 @@ export default function Edit({item, onEdit, onNew, isNew}) {
         <Form.Group md="4" controlId="answerC">
           <Form.Label>Antwort C</Form.Label>
           <Form.Control
-            {...register('answerC', registerOptions.answer)}
+            {...register('answerC', registerOptions.answerC)}
             as="textarea"
             rows={2}
             isInvalid={firstSubmit && !(!errors?.answerC)}

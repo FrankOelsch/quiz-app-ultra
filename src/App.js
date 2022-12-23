@@ -11,14 +11,14 @@ import {Toast, ToastContainer} from "react-bootstrap";
 const Questions = [
   {
     id: nanoid(),
-    question: "Welche der 3 Nährstoffe - Kohlenhydrate, Eiweisse, Fette - ist nicht essentiell?",
+    question: "Welche der 3 Nährstoffe - Kohlenhydrate, Eiweiße, Fette - ist nicht essentiell?",
     explanation: "Kohlenhydrate. Es gibt essentielle Fettsäuren, essentielle Aminosäuren, aber keine essentiellen Kohlenhydrate.",
-    tags: "KH,Fette,Eiweiss",
+    tags: "KH,Fette,Eiweiß",
     bookmarked: false,
     answers: [
-      {value: "a", de: "Kohlenhydrate", correctly: true},
-      {value: "b", de: "Eiweiße", correctly: false},
-      {value: "c", de: "Fette", correctly: false},
+      {value: "a", de: "A: Kohlenhydrate", correctly: true},
+      {value: "b", de: "B: Eiweiße", correctly: false},
+      {value: "c", de: "C: Fette", correctly: false},
     ]
   },
   {
@@ -28,9 +28,9 @@ const Questions = [
     tags: "html",
     bookmarked: true,
     answers: [
-      {value: "a", de: "Hooked Markup Language", correctly: false},
-      {value: "b", de: "Hypertext Modular Language", correctly: false},
-      {value: "c", de: "Hypertext Markup Language", correctly: true},
+      {value: "a", de: "A: Hooked Markup Language", correctly: false},
+      {value: "b", de: "B: Hypertext Modular Language", correctly: false},
+      {value: "c", de: "C: Hypertext Markup Language", correctly: true},
     ]
   },
   {
@@ -40,9 +40,9 @@ const Questions = [
     tags: "css",
     bookmarked: false,
     answers: [
-      {value: "a", de: "Cascading Smart Styles", correctly: false},
-      {value: "b", de: "Cascading Style Sheets", correctly: true},
-      {value: "c", de: "Commanded Style Sheets", correctly: false},
+      {value: "a", de: "A: Cascading Smart Styles", correctly: false},
+      {value: "b", de: "B: Cascading Style Sheets", correctly: true},
+      {value: "c", de: "C: Commanded Style Sheets", correctly: false},
     ]
   },
 ];
@@ -129,8 +129,24 @@ function App() {
           return {
             ...item,
             question: values.question,
-            answers: values.answer,
-            tags: values.tags
+            answers: item.answers.map(answer => {
+              if (answer.value === "a") {
+                return {
+                  ...answer, de: "A: " + values.answerA,
+                };
+              } else if (answer.value === "b") {
+                return {
+                  ...answer, de: "B: " + values.answerB,
+                };
+              } else if (answer.value === "c") {
+                return {
+                  ...answer, de: "C: " + values.answerC,
+                };
+              } else {
+                return answer;
+              }
+            }),
+            tags: values.tags,
           };
         } else {
           return item;
