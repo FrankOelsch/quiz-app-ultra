@@ -16,10 +16,11 @@ const Questions = [
     tags: "KH,Fette,Eiweiß",
     bookmarked: false,
     answers: [
-      {value: "a", de: "A: Kohlenhydrate", correctly: true},
-      {value: "b", de: "B: Eiweiße", correctly: false},
-      {value: "c", de: "C: Fette", correctly: false},
-    ]
+      {value: "A", de: "Kohlenhydrate"},
+      {value: "B", de: "Eiweiße"},
+      {value: "C", de: "Fette"},
+    ],
+    correctly: "A",
   },
   {
     id: nanoid(),
@@ -28,10 +29,11 @@ const Questions = [
     tags: "html",
     bookmarked: true,
     answers: [
-      {value: "a", de: "A: Hooked Markup Language", correctly: false},
-      {value: "b", de: "B: Hypertext Modular Language", correctly: false},
-      {value: "c", de: "C: Hypertext Markup Language", correctly: true},
-    ]
+      {value: "A", de: "Hooked Markup Language"},
+      {value: "B", de: "Hypertext Modular Language"},
+      {value: "C", de: "Hypertext Markup Language"},
+    ],
+    correctly: "C",
   },
   {
     id: nanoid(),
@@ -40,10 +42,11 @@ const Questions = [
     tags: "css",
     bookmarked: false,
     answers: [
-      {value: "a", de: "A: Cascading Smart Styles", correctly: false},
-      {value: "b", de: "B: Cascading Style Sheets", correctly: true},
-      {value: "c", de: "C: Commanded Style Sheets", correctly: false},
-    ]
+      {value: "A", de: "Cascading Smart Styles"},
+      {value: "B", de: "Cascading Style Sheets"},
+      {value: "C", de: "Commanded Style Sheets"},
+    ],
+    correctly: "B",
   },
 ];
 
@@ -54,10 +57,11 @@ const defaultQuestion = {
   tags: "",
   bookmarked: false,
   answers: [
-    {value: "a", de: "", correctly: false},
-    {value: "b", de: "", correctly: false},
-    {value: "c", de: "", correctly: false},
-  ]
+    {value: "A", de: ""},
+    {value: "B", de: ""},
+    {value: "C", de: ""},
+  ],
+  correctly: "",
 }
 
 function setToLocalStorage(key, value) {
@@ -109,8 +113,25 @@ function App() {
       {
         id: nanoid(),
         question: values.question,
-        answer: values.answer,
+        answers: item.answers.map(answer => {
+          if (answer.value === "A") {
+            return {
+              ...answer, de: values.answerA,
+            };
+          } else if (answer.value === "B") {
+            return {
+              ...answer, de: values.answerB,
+            };
+          } else if (answer.value === "C") {
+            return {
+              ...answer, de: values.answerC,
+            };
+          } else {
+            return answer;
+          }
+        }),
         tags: tagstring,
+        correctly: values.correctly,
         isBookmarked: false,
       },
       ...cards,
@@ -123,6 +144,8 @@ function App() {
   function editCard(data) {
     const values = data;
 
+    console.log("values", values);
+
     setCards(
       cards.map((item) => {
         if (item.id === values.id) {
@@ -130,23 +153,24 @@ function App() {
             ...item,
             question: values.question,
             answers: item.answers.map(answer => {
-              if (answer.value === "a") {
+              if (answer.value === "A") {
                 return {
-                  ...answer, de: "A: " + values.answerA,
+                  ...answer, de: values.answerA,
                 };
-              } else if (answer.value === "b") {
+              } else if (answer.value === "B") {
                 return {
-                  ...answer, de: "B: " + values.answerB,
+                  ...answer, de: values.answerB,
                 };
-              } else if (answer.value === "c") {
+              } else if (answer.value === "C") {
                 return {
-                  ...answer, de: "C: " + values.answerC,
+                  ...answer, de: values.answerC,
                 };
               } else {
                 return answer;
               }
             }),
             tags: values.tags,
+            correctly: values.correctly,
           };
         } else {
           return item;

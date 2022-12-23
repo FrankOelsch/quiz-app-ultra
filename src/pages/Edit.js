@@ -23,6 +23,7 @@ export default function Edit({item, onEdit, onNew, isNew}) {
       answerA: item.answers[0].de,
       answerB: item.answers[1].de,
       answerC: item.answers[2].de,
+      correctly: item.correctly,
       tags: item.tags,
     }
   });
@@ -167,6 +168,34 @@ export default function Edit({item, onEdit, onNew, isNew}) {
             {firstSubmit && errors?.answerC && errors.answerC.message}
           </Form.Control.Feedback>
         </Form.Group>
+
+        <Form.Check
+          {...register('correctly')}
+          type="radio"
+          inline
+          label="Antwort A ist richtig"
+          name="correctly"
+          id="optA"
+          value="A"
+        />
+        <Form.Check
+          {...register('correctly')}
+          type="radio"
+          inline
+          label="Antwort B ist richtig"
+          name="correctly"
+          id="optB"
+          value="B"
+        />
+        <Form.Check
+          {...register('correctly')}
+          type="radio"
+          inline
+          label="Antwort C ist richtig"
+          name="correctly"
+          id="optC"
+          value="C"
+        />
 
         <Form.Group md="4" controlId="tags">
           <Form.Label>Tags</Form.Label>

@@ -40,12 +40,6 @@ export default function QCard({
     setShowModal(false);
   }
 
-  const radios = [
-    {name: 'Antwort A: Kohlenhydrate Kohlenhydrate Kohlenhydrate Kohlenhydrate', value: 'a', correctly: false},
-    {name: 'Antwort B: Eiweiße', value: 'b', correctly: true},
-    {name: 'Antwort C: Fette', value: 'c', correctly: false},
-  ];
-
   return (
     <>
       <Modal
@@ -105,13 +99,13 @@ export default function QCard({
                 type="radio"
                 size="sm"
                 // variant={showAnswer ? (radioValue === radio.value ? (radio.correctly ? 'outline-success' : 'outline-danger') : 'outline-primary') : 'outline-primary'}
-                variant={showAnswer ? (answer.correctly ? 'outline-success' : 'outline-danger') : 'outline-primary'}
+                variant={showAnswer ? (answer.value === card.correctly ? 'outline-success' : 'outline-danger') : 'outline-primary'}
                 name={card.id}
                 value={answer.value}
                 checked={radioValue === answer.value}
                 onChange={(e) => setRadioValue(e.currentTarget.value)}
               >
-                {answer.de}
+                {answer.value + ": " + answer.de}
               </ToggleButton>
             ))}
           </ButtonGroup>
