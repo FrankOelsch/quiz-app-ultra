@@ -79,7 +79,7 @@ function App() {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    setToLocalStorage("Questions", cards);
+    setToLocalStorage("QuestionsMC", cards);
   }, [cards]);
 
   function deleteCard(id) {
@@ -129,7 +129,7 @@ function App() {
           return {
             ...item,
             question: values.question,
-            answer: values.answer,
+            answers: values.answer,
             tags: values.tags
           };
         } else {

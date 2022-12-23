@@ -20,7 +20,9 @@ export default function Edit({item, onEdit, onNew, isNew}) {
     defaultValues: {
       id: item.id,
       question: item.question,
-      answer: item.answer,
+      answerA: item.answers[0].de,
+      answerB: item.answers[1].de,
+      answerC: item.answers[2].de,
       tags: item.tags,
     }
   });
@@ -37,7 +39,29 @@ export default function Edit({item, onEdit, onNew, isNew}) {
         message: "Bitte max 200 Text-Zeichen eingeben",
       },
     },
-    answer: {
+    answerA: {
+      required: "Bitte eine Antwort eingeben",
+      minLength: {
+        value: 10,
+        message: "Die Antwort muss min 10 Text-Zeichen haben",
+      },
+      maxLength: {
+        value: 200,
+        message: "Bitte max 200 Text-Zeichen eingeben",
+      },
+    },
+    answerB: {
+      required: "Bitte eine Antwort eingeben",
+      minLength: {
+        value: 10,
+        message: "Die Antwort muss min 10 Text-Zeichen haben",
+      },
+      maxLength: {
+        value: 200,
+        message: "Bitte max 200 Text-Zeichen eingeben",
+      },
+    },
+    answerC: {
       required: "Bitte eine Antwort eingeben",
       minLength: {
         value: 10,
@@ -96,19 +120,51 @@ export default function Edit({item, onEdit, onNew, isNew}) {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group md="4" controlId="answer">
-          <Form.Label>Antwort</Form.Label>
+        <Form.Group md="4" controlId="answerA">
+          <Form.Label>Antwort A</Form.Label>
           <Form.Control
-            {...register('answer', registerOptions.answer)}
+            {...register('answerA', registerOptions.answer)}
             as="textarea"
-            rows={3}
-            isInvalid={firstSubmit && !(!errors?.answer)}
-            isValid={firstSubmit && (!errors?.answer)}
-            name="answer"
+            rows={2}
+            isInvalid={firstSubmit && !(!errors?.answerA)}
+            isValid={firstSubmit && (!errors?.answerA)}
+            name="answerA"
             maxLength={300}
           />
           <Form.Control.Feedback type="invalid">
-            {firstSubmit && errors?.answer && errors.answer.message}
+            {firstSubmit && errors?.answerA && errors.answerA.message}
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group md="4" controlId="answerB">
+          <Form.Label>Antwort B</Form.Label>
+          <Form.Control
+            {...register('answerB', registerOptions.answer)}
+            as="textarea"
+            rows={2}
+            isInvalid={firstSubmit && !(!errors?.answerB)}
+            isValid={firstSubmit && (!errors?.answerB)}
+            name="answerB"
+            maxLength={300}
+          />
+          <Form.Control.Feedback type="invalid">
+            {firstSubmit && errors?.answerB && errors.answerB.message}
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group md="4" controlId="answerC">
+          <Form.Label>Antwort C</Form.Label>
+          <Form.Control
+            {...register('answerC', registerOptions.answer)}
+            as="textarea"
+            rows={2}
+            isInvalid={firstSubmit && !(!errors?.answerC)}
+            isValid={firstSubmit && (!errors?.answerC)}
+            name="answerC"
+            maxLength={300}
+          />
+          <Form.Control.Feedback type="invalid">
+            {firstSubmit && errors?.answerC && errors.answerC.message}
           </Form.Control.Feedback>
         </Form.Group>
 
