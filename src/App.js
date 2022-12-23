@@ -12,32 +12,52 @@ const Questions = [
   {
     id: nanoid(),
     question: "Welche der 3 Nährstoffe - Kohlenhydrate, Eiweisse, Fette - ist nicht essentiell?",
-    answer: "Kohlenhydrate. Es gibt essentielle Fettsäuren, essentielle Aminosäuren, aber keine essentiellen Kohlenhydrate.",
+    explanation: "Kohlenhydrate. Es gibt essentielle Fettsäuren, essentielle Aminosäuren, aber keine essentiellen Kohlenhydrate.",
     tags: "KH,Fette,Eiweiss",
     bookmarked: false,
+    answers: [
+      {value: "a", de: "Kohlenhydrate", correctly: true},
+      {value: "b", de: "Eiweiße", correctly: false},
+      {value: "c", de: "Fette", correctly: false},
+    ]
   },
   {
     id: nanoid(),
     question: "Was bedeutet HTML?",
-    answer: "Hypertext Markup Language.",
+    explanation: "Hypertext Markup Language",
     tags: "html",
     bookmarked: true,
+    answers: [
+      {value: "a", de: "Hooked Markup Language", correctly: false},
+      {value: "b", de: "Hypertext Modular Language", correctly: false},
+      {value: "c", de: "Hypertext Markup Language", correctly: true},
+    ]
   },
   {
     id: nanoid(),
     question: "Was bedeutet CSS?",
-    answer: "Cascading Style Sheets",
+    explanation: "Cascading Style Sheets",
     tags: "css",
     bookmarked: false,
+    answers: [
+      {value: "a", de: "Cascading Smart Styles", correctly: false},
+      {value: "b", de: "Cascading Style Sheets", correctly: true},
+      {value: "c", de: "Commanded Style Sheets", correctly: false},
+    ]
   },
 ];
 
 const defaultQuestion = {
   id: 0,
   question: "",
-  answer: "",
+  explanation: "",
   tags: "",
   bookmarked: false,
+  answers: [
+    {value: "a", de: "", correctly: false},
+    {value: "b", de: "", correctly: false},
+    {value: "c", de: "", correctly: false},
+  ]
 }
 
 function setToLocalStorage(key, value) {
@@ -53,7 +73,7 @@ function getFromLocalStorage(key) {
 }
 
 function App() {
-  const [cards, setCards] = useState(getFromLocalStorage("Questions") ?? Questions);
+  const [cards, setCards] = useState(getFromLocalStorage("QuestionsMC") ?? Questions);
   const navigate = useNavigate();
   const [item, setItem] = useState(defaultQuestion);
   const [showToast, setShowToast] = useState(false);
@@ -106,10 +126,12 @@ function App() {
     setCards(
       cards.map((item) => {
         if (item.id === values.id) {
-          return { ...item,
+          return {
+            ...item,
             question: values.question,
             answer: values.answer,
-            tags: values.tags };
+            tags: values.tags
+          };
         } else {
           return item;
         }
@@ -132,7 +154,7 @@ function App() {
                 onDelete={deleteCard}
                 onBookmark={toggleBookmark}
                 setItem={setItem}
-              /> }
+              />}
             />
             <Route path="/:cardID" element={
               <Edit
@@ -140,7 +162,7 @@ function App() {
                 setItem={setItem}
                 onEdit={editCard}
                 isNew={false}
-              /> }
+              />}
             />
           </Route>
 
@@ -150,7 +172,7 @@ function App() {
               onDelete={deleteCard}
               onBookmark={toggleBookmark}
               setItem={setItem}
-            /> }
+            />}
           />
 
           <Route path="/bookmark/:cardID" element={
@@ -159,7 +181,7 @@ function App() {
               setItem={setItem}
               onEdit={editCard}
               isNew={false}
-            /> }
+            />}
           />
 
           <Route path="/new" element={
@@ -168,37 +190,38 @@ function App() {
               setItem={setItem}
               onNew={newCard}
               isNew={true}
-            /> }
+            />}
           />
 
           <Route path="*" element={<h1>Diese Seite existiert nicht</h1>}/>
         </Routes>
 
-        <div style={{position: "fixed",
+        <div style={{
+          position: "fixed",
           top: 10,
           width: "80%",
           height: "60px",
           zIndex: 30,
         }}>
-        <ToastContainer position="middle-start">
-          <Toast onClose={() => setShowToast(false)}
-                 show={showToast}
-                 delay={5000}
-                 autohide
-                 animation
-                 bg="success">
-            <Toast.Header>
-              <img
-                src=""
-                className="rounded me-2"
-                alt=""
-              />
-              <strong className="me-auto">Gelöscht</strong>
-              <small>soeben</small>
-            </Toast.Header>
-            <Toast.Body>Datensatz wurde erfolgreich gelöscht.</Toast.Body>
-          </Toast>
-        </ToastContainer>
+          <ToastContainer position="middle-start">
+            <Toast onClose={() => setShowToast(false)}
+                   show={showToast}
+                   delay={5000}
+                   autohide
+                   animation
+                   bg="success">
+              <Toast.Header>
+                <img
+                  src=""
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">Gelöscht</strong>
+                <small>soeben</small>
+              </Toast.Header>
+              <Toast.Body>Datensatz wurde erfolgreich gelöscht.</Toast.Body>
+            </Toast>
+          </ToastContainer>
         </div>
       </main>
     </div>

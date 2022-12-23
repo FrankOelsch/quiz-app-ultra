@@ -1,18 +1,21 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import {Button, Modal} from "react-bootstrap";
+import {Button, ButtonGroup, Modal, ToggleButton, Card, Badge} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function Card({
-                               card,
-                               onDelete,
-                               onBookmark,
-                               setItem,
-                             }) {
+export default function QCard({
+                                card,
+                                onDelete,
+                                onBookmark,
+                                setItem,
+                              }) {
 
   const [showAnswer, setShowAnswer] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  const [radioValue, setRadioValue] = useState('x');
+
   const navigate = useNavigate();
 
   function handleShowModal() {
@@ -37,6 +40,12 @@ export default function Card({
     setShowModal(false);
   }
 
+  const radios = [
+    {name: 'Antwort A: Kohlenhydrate Kohlenhydrate Kohlenhydrate Kohlenhydrate', value: 'a', correctly: false},
+    {name: 'Antwort B: Eiweiße', value: 'b', correctly: true},
+    {name: 'Antwort C: Fette', value: 'c', correctly: false},
+  ];
+
   return (
     <>
       <Modal
@@ -60,56 +69,116 @@ export default function Card({
         </Modal.Footer>
       </Modal>
 
-      <StyledArticle>
-        <button
-          onClick={() => setShowAnswer(!showAnswer)}
-          className="card__answerButton">
-          {showAnswer ? "Verstecke Antwort" : "Zeige Antwort"}
-        </button>
-        <h2 className="card__question">{card.question}</h2>
+      <Card bg="light" border="primary" style={{width: "100%"}}>
+        <Card.Header style={{paddingRight: "40px", textAlign: "left"}}>
+          {card.question}
 
-        <p className={`card__answer ${showAnswer ? "" : "hidden"}`} data-js="answer">
-          {card.answer}
-        </p>
+          <div style={{
+            position: "absolute",
+            cursor: "pointer",
+            top: "-8px",
+            right: "2px"
+          }}>
+            <svg height="40" width="40">
+              <polygon
+                onClick={() => onBookmark(card.id)}
+                points="2,2 30,2 30,38 16,24 2,38"
+                className={`card__bookmark-svg${card.bookmarked ? "-active" : ""}`}
+                style={{fill: card.bookmarked ? "#6610f2" : "lightgray"}}
+              />
+            </svg>
+          </div>
+        </Card.Header>
 
-        <ul className="card__tagContainer">
+        <Card.Body>
+
+          {/*<p className={`card__answer ${showAnswer ? "" : "hidden"}`} data-js="answer">*/}
+          {/*  {card.answer}*/}
+          {/*</p>*/}
+
+          <ButtonGroup vertical style={{width: "100%", marginBottom: "14px"}}>
+            {card.answers.map((answer, idx) => (
+              <ToggleButton
+                style={{textAlign: "left"}}
+                key={idx}
+                id={`${card.id}-${idx}`}
+                type="radio"
+                size="sm"
+                // variant={showAnswer ? (radioValue === radio.value ? (radio.correctly ? 'outline-success' : 'outline-danger') : 'outline-primary') : 'outline-primary'}
+                variant={showAnswer ? (answer.correctly ? 'outline-success' : 'outline-danger') : 'outline-primary'}
+                name={card.id}
+                value={answer.value}
+                checked={radioValue === answer.value}
+                onChange={(e) => setRadioValue(e.currentTarget.value)}
+              >
+                {answer.de}
+              </ToggleButton>
+            ))}
+          </ButtonGroup>
+
+          <ButtonContainer>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => setShowAnswer(!showAnswer)}
+              >
+              {showAnswer ? "Verstecke Antwort" : "Zeige Antwort"}
+            </Button>
+
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => handleOnEdit(card.id)}
+            >
+              Ändern
+            </Button>
+
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => handleOnDelete(card.id)}
+            >
+              Löschen
+            </Button>
+          </ButtonContainer>
+
+        </Card.Body>
+
+        <Card.Footer>
+          <TagContainer>
           {card.tags.length > 0
             ? card.tags.split(",").map((tag, index) => {
               return (
-                <li key={index} className="card__tagContainer__tag">
+                <Badge bg="info" key={index} className="card__tagContainer__tag">
                   {`#${tag}`}
-                </li>
+                </Badge>
               );
             })
             : ""}
-        </ul>
-        <div className="card__bookmark">
-          <svg height="40" width="40">
-            <polygon
-              onClick={() => onBookmark(card.id)}
-              points="2,2 30,2 30,38 16,24 2,38"
-              className={`card__bookmark-svg${card.bookmarked ? "-active" : ""}`}
-            />
-          </svg>
-        </div>
-
-        <div>
-          <button
-            onClick={() => handleOnEdit(card.id)}
-            className="card__editButton">
-            Ändern
-          </button>
-
-          <button
-            onClick={() => handleOnDelete(card.id)}
-            className="card__deleteButton">
-            Löschen
-          </button>
-        </div>
-      </StyledArticle>
+          </TagContainer>
+        </Card.Footer>
+      </Card>
     </>
   );
 }
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+`
+
+const TagContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+`
 
 const StyledArticle = styled.article`
   position: relative;
